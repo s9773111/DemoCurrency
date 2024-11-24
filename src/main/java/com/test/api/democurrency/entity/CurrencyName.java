@@ -30,6 +30,7 @@ public class CurrencyName {
     @Setter
     private LocalDateTime updateTime;
 
+
     @Override
     public String toString() {
         return "CurrencyName{" +

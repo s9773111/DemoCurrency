@@ -3,6 +3,7 @@ package com.test.api.democurrency.controller;
 import com.test.api.democurrency.entity.CurrencyName;
 import com.test.api.democurrency.repository.CurrencyNameRepository;
 import com.test.api.democurrency.service.CurrencyNameService;
+import com.test.api.democurrency.webservice.request.CurrencyRequest;
 import com.test.api.democurrency.webservice.response.BitcoinPriceResponse;
 import com.test.api.democurrency.webservice.response.CurrencyResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +20,7 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -89,7 +91,25 @@ public class CurrencyControllerTest {
     }
 
     // 3. 測試呼叫更新幣別對應表資料 API，並顯示其內容。
-    
+    @Test
+    public void testUpdateCurrencyName() {
+        CurrencyRequest request = new CurrencyRequest();
+        request.setCode("USD");
+        request.setName("美金");
+
+        // 檢查資料是否在資料庫內
+        CurrencyName existing = currencyNameRepository.findByCurrencyCode("USD");
+        if (existing == null) {
+            currencyNameRepository.save(currencyNameService.addCurrencyItem(request.getCode(), request.getName()));
+        }
+
+        CurrencyName currencyName = currencyNameService.updateCurrencyNameByCode(request);
+
+        assertNotNull(currencyName);
+        assertEquals(request.getName(), currencyName.getCurrencyName());
+        assertEquals(request.getCode(), currencyName.getCurrencyCode());
+    }
+
 
 
     // 4. 測試呼叫刪除幣別對應表資料 API。
@@ -134,4 +154,5 @@ public class CurrencyControllerTest {
     }
 
     // 6. 測試呼叫資料轉換的 API，並顯示其內容。
+    
 }

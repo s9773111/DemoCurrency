@@ -81,6 +81,26 @@ public class CurrencyController {
 		}
 	}
 
+
+	// Update
+	@PostMapping("/update")
+	public ResponseEntity<?> updateCurrencyName(@RequestBody CurrencyRequest request) {
+		try {
+			CurrencyName currencyName = currencyNameService.updateCurrencyNameByCode(request);
+			CurrencyResponse response = new CurrencyResponse(currencyName.getCurrencyCode(), currencyName.getCurrencyName());
+
+			if (response != null) {
+				return ResponseEntity.ok(response);
+			} else {
+				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Currency code not found.");
+			}
+		} catch (IllegalArgumentException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred.");
+		}
+	}
+
 	// Delete
 	@PostMapping("/delete")
 	public ResponseEntity<String> deleteCurrencyName(@RequestBody CurrencyRequest request) {
