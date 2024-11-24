@@ -26,7 +26,9 @@ public class BitcoinPriceResponse {
         private String updateduk;
     }
 
+    @Getter
     public static class Bpi {
+
         @JsonProperty("USD")
         private Currency usd;
 
@@ -37,6 +39,7 @@ public class BitcoinPriceResponse {
         private Currency eur;
     }
 
+    @Getter
     public static class Currency {
         @JsonProperty("code")
         private String code;

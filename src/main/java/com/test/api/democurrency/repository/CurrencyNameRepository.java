@@ -9,4 +9,6 @@ public interface CurrencyNameRepository extends JpaRepository<CurrencyName, Inte
     List<CurrencyName> findAll();
 
     CurrencyName findByCurrencyCode(String code);
+
+
 }
