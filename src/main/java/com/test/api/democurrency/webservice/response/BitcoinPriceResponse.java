@@ -15,6 +15,7 @@ public class BitcoinPriceResponse {
     private String disclaimer;
     private Bpi bpi;
 
+    @Getter
     public static class Time {
         @JsonProperty("updated")
         private String updated;

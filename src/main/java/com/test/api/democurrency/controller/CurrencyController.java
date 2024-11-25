@@ -4,6 +4,7 @@ import com.test.api.democurrency.entity.CurrencyName;
 import com.test.api.democurrency.service.BitcoinPriceService;
 import com.test.api.democurrency.service.CurrencyNameService;
 import com.test.api.democurrency.webservice.request.CurrencyRequest;
+import com.test.api.democurrency.webservice.response.ApplicationResponse;
 import com.test.api.democurrency.webservice.response.BitcoinPriceResponse;
 import com.test.api.democurrency.webservice.response.CurrencyResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,4 +112,16 @@ public class CurrencyController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Currency code not found.");
 		}
 	}
+
+	// Application
+	@GetMapping("/application")
+	public ResponseEntity<ApplicationResponse> getAppliation() {
+		ApplicationResponse response = bitcoinPriceService.getAppliation();
+		if (response != null) {
+			return ResponseEntity.ok(response);
+		} else {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApplicationResponse());
+		}
+	}
+
 }

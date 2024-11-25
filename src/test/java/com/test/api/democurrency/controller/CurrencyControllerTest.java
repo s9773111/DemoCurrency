@@ -2,9 +2,12 @@ package com.test.api.democurrency.controller;
 
 import com.test.api.democurrency.entity.CurrencyName;
 import com.test.api.democurrency.repository.CurrencyNameRepository;
+import com.test.api.democurrency.service.BitcoinPriceService;
 import com.test.api.democurrency.service.CurrencyNameService;
 import com.test.api.democurrency.webservice.request.CurrencyRequest;
+import com.test.api.democurrency.webservice.response.ApplicationResponse;
 import com.test.api.democurrency.webservice.response.BitcoinPriceResponse;
+import com.test.api.democurrency.webservice.response.CurrencyAppResponse;
 import com.test.api.democurrency.webservice.response.CurrencyResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,9 +16,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
+
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method; // 必須引入 method 方法
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
@@ -23,9 +28,6 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @Transactional
@@ -36,6 +38,9 @@ public class CurrencyControllerTest {
 
     @Autowired
     private CurrencyNameRepository currencyNameRepository; // query
+
+    @Autowired
+    private BitcoinPriceService bitcoinPriceService;
 
     private RestTemplate restTemplate;
 
@@ -49,7 +54,7 @@ public class CurrencyControllerTest {
 
         // init
         restTemplate = new RestTemplate();
-        mockServer = MockRestServiceServer.createServer(restTemplate);
+        // mockServer = MockRestServiceServer.createServer(restTemplate);
     }
 
 
@@ -154,5 +159,14 @@ public class CurrencyControllerTest {
     }
 
     // 6. 測試呼叫資料轉換的 API，並顯示其內容。
+    @Test
+    public void testApplication(){
+        ApplicationResponse currency = bitcoinPriceService.getAppliation();
+
+        assertNotNull(currency);
+        assertNotNull(currency.getDateTime());
+        assertTrue(currency.getCurrencyResponseList().size()>0);
+
+    }
     
 }
