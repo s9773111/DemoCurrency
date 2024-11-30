@@ -109,7 +109,7 @@ public class BitcoinPriceServiceImpl implements BitcoinPriceService {
                         name = "歐元";
                         break;
                     default:
-                        name = "錢";  // 若沒有匹配的情況，可以直接使用 description 或設為 "未知"
+                        name = "錢";  
                         break;
                 }
 
